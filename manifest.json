@@ -1,0 +1,15 @@
+{
+  "name": "星之武俠",
+  "short_name": "星之武俠",
+  "description": "離線武俠 MMORPG：選門派、闖蕩江湖、打怪升級、刷裝備。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0b0e13",
+  "theme_color": "#0b0e13",
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
