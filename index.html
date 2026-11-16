@@ -4,14 +4,11 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"/>
 <meta name="color-scheme" content="dark"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="星之武俠"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="theme-color" content="#0b0e13"/>
-<link rel="manifest" href="/manifest.json"/>
-<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="星之武俠"/>
 <link rel="icon" href="data:,">
 <title>星之武俠 · 奇幻冒險</title>
 <style>
@@ -19,17 +16,20 @@
  --ink:#0b0e13;--paper:#ece1c4;--gold:#c9a44e;--gold2:#ecd28a;--gold-dim:#8a743a;
  --verm:#b03a2e;--serif:"Songti TC","Songti SC","PMingLiU","Noto Serif TC","Noto Serif SC",serif;
  --plate:rgba(10,13,18,.72);--plate2:rgba(10,13,18,.55);
+ /* PWA 全螢幕安全區：避開瀏海／Dynamic Island／Home 指示條，畫面不再頂太上被切掉 */
+ --sat:env(safe-area-inset-top,0px);--sar:env(safe-area-inset-right,0px);
+ --sab:env(safe-area-inset-bottom,0px);--sal:env(safe-area-inset-left,0px);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 html,body{margin:0;height:100%;background:var(--ink);color:var(--paper);font-family:var(--serif);overflow:hidden}
 button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 #app{height:100dvh;display:flex;flex-direction:column;background:#0b0e13}
-#errBox{position:fixed;top:8px;left:8px;right:8px;z-index:99;background:rgba(120,20,10,.92);color:#fff;font-size:13px;padding:8px 12px;display:none;white-space:pre-wrap}
+#errBox{position:fixed;top:calc(8px + var(--sat));left:calc(8px + var(--sal));right:calc(8px + var(--sar));z-index:99;background:rgba(120,20,10,.92);color:#fff;font-size:13px;padding:8px 12px;display:none;white-space:pre-wrap}
 .seal{display:inline-flex;align-items:center;justify-content:center;background:var(--verm);color:#f7ead2;font-weight:700;border-radius:4px;box-shadow:inset 0 0 0 1.5px rgba(247,234,210,.55);letter-spacing:2px}
 .divider{display:flex;align-items:center;gap:12px;color:var(--gold);font-size:13px;letter-spacing:4px;margin:14px 0}
 .divider:before,.divider:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
 /* ===== 選角：黃昏湖畔剪影 ===== */
-#selectScreen{flex:1;overflow-y:auto;padding:28px 18px 46px;position:relative;background:
+#selectScreen{flex:1;overflow-y:auto;padding:calc(28px + var(--sat)) calc(18px + var(--sar)) calc(46px + var(--sab)) calc(18px + var(--sal));position:relative;background:
  linear-gradient(180deg,#2c3a55 0%,#7a5a52 34%,#c98a5e 55%,#5c4a3a 72%,#141a20 100%)}
 #selectScreen:before{content:"";position:absolute;left:0;right:0;bottom:0;height:190px;pointer-events:none;opacity:.9;background:
  radial-gradient(300px 90px at 18% 100%,#0d1410 60%,transparent 61%),
@@ -80,7 +80,7 @@ button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 /* HUD 通用板 */
 .hudPlate{background:var(--plate);border:1px solid rgba(201,164,78,.45);box-shadow:0 4px 16px rgba(0,0,0,.45),inset 0 0 0 1px rgba(0,0,0,.5);backdrop-filter:blur(2px)}
 /* 左上：角色框 */
-#playerFrame{position:absolute;top:10px;left:10px;z-index:6;display:flex;gap:9px;align-items:flex-start;pointer-events:auto;cursor:pointer}
+#playerFrame{position:absolute;top:calc(10px + var(--sat));left:calc(10px + var(--sal));z-index:6;display:flex;gap:9px;align-items:flex-start;pointer-events:auto;cursor:pointer}
 #avatarRing{width:62px;height:62px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(circle at 50% 32%,#3d4a63,#141a26 75%);overflow:hidden;flex:none;position:relative;box-shadow:0 4px 14px rgba(0,0,0,.6)}
 #avatarRing svg{width:100%;height:100%}
 #lvBadge{position:absolute;left:50%;transform:translateX(-50%);bottom:-7px;background:linear-gradient(180deg,#4a3a15,#241c0a);border:1px solid var(--gold);color:var(--gold2);font-size:11px;font-weight:900;padding:0 7px;border-radius:8px;z-index:7;white-space:nowrap}
@@ -97,7 +97,7 @@ button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 .buffIco{width:20px;height:20px;border:1px solid rgba(201,164,78,.6);background:rgba(20,30,20,.8);display:flex;align-items:center;justify-content:center}
 .buffIco svg{width:13px;height:13px}
 /* 右上：小地圖 + 系統鈕 */
-#topRight{position:absolute;top:10px;right:10px;z-index:6;display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+#topRight{position:absolute;top:calc(10px + var(--sat));right:calc(10px + var(--sar));z-index:6;display:flex;flex-direction:column;align-items:flex-end;gap:7px}
 #miniWrap{width:128px;height:128px;border-radius:50%;border:2px solid rgba(201,164,78,.75);overflow:hidden;position:relative;box-shadow:0 6px 18px rgba(0,0,0,.55);background:#101820;flex:none;cursor:pointer}
 #miniHint{position:absolute;top:19px;left:0;right:0;text-align:center;font-size:9px;color:rgba(255,233,168,.8);text-shadow:0 1px 2px #000;letter-spacing:1px;pointer-events:none}
 .profHead{display:flex;gap:16px;align-items:center;margin-bottom:14px}
@@ -128,7 +128,7 @@ button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 #questTag .qh{color:var(--gold2);font-size:11px;letter-spacing:3px;border-bottom:1px solid rgba(201,164,78,.35);padding-bottom:4px;margin-bottom:5px}
 #questTag b{color:#ffe9a8}
 /* Boss 血條（頂中） */
-#bossBar{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:min(520px,62%);display:none;z-index:6}
+#bossBar{position:absolute;top:calc(14px + var(--sat));left:50%;transform:translateX(-50%);width:min(520px,62%);display:none;z-index:6}
 #bossBar .bn{text-align:center;font-size:15px;color:#ffb0a4;text-shadow:0 1px 4px #000,0 0 14px rgba(200,40,20,.6);margin-bottom:4px;font-weight:900;letter-spacing:4px}
 #bossBar .bar{height:13px;transform:none;border-color:rgba(255,160,140,.5)}
 #bossBar .bar i{background:linear-gradient(180deg,#ff6a55,#8e1c10)}
@@ -136,10 +136,10 @@ button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 #zoneBanner .zb1{font-size:30px;font-weight:900;letter-spacing:12px;color:#fdf6e0;text-shadow:0 2px 10px #000,0 0 30px rgba(255,180,90,.5)}
 #zoneBanner .zb2{font-size:12px;letter-spacing:5px;color:#f3cf9a;text-shadow:0 1px 5px #000;margin-top:5px}
 /* 左下：聊天框 */
-#chatBox{position:absolute;left:10px;bottom:64px;z-index:5;width:min(300px,44vw);padding:7px 10px;font-size:11.5px;line-height:1.75;pointer-events:none;max-height:118px;overflow:hidden}
+#chatBox{position:absolute;left:calc(10px + var(--sal));bottom:calc(64px + var(--sab));z-index:5;width:min(300px,44vw);padding:7px 10px;font-size:11.5px;line-height:1.75;pointer-events:none;max-height:118px;overflow:hidden}
 #chatBox .ct{color:#8fb7d8}#chatBox .cs{color:#e8b45e}#chatBox .cw{color:#c9d4e8}#chatBox .cl{color:#a8d3ae}
 /* 底部中央：技能熱鍵欄 */
-#hotbar{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;z-index:6;display:flex;gap:5px;padding:6px 7px;align-items:flex-end}
+#hotbar{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + var(--sab));z-index:6;display:flex;gap:5px;padding:6px 7px;align-items:flex-end}
 .slot{width:52px;height:52px;border:1px solid rgba(201,164,78,.5);background:linear-gradient(180deg,rgba(30,36,48,.9),rgba(10,13,18,.92));position:relative;display:flex;align-items:center;justify-content:center;flex:none}
 .slot svg{width:27px;height:27px}
 .slot .key{position:absolute;top:1px;left:3px;font-size:9px;color:#ffe9a8;text-shadow:0 1px 2px #000}
@@ -149,17 +149,17 @@ button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 .slot .sname{position:absolute;left:0;right:0;bottom:-15px;text-align:center;font-size:9.5px;color:#d8cba6;text-shadow:0 1px 3px #000;white-space:nowrap}
 .slot:active{filter:brightness(1.5)}
 /* 底部經驗條 */
-#xpBarWrap{position:absolute;left:0;right:0;bottom:0;height:10px;background:rgba(0,0,0,.8);z-index:6;border-top:1px solid rgba(201,164,78,.4)}
+#xpBarWrap{position:absolute;left:0;right:0;bottom:0;height:calc(10px + var(--sab));padding-bottom:var(--sab);background:rgba(0,0,0,.8);z-index:6;border-top:1px solid rgba(201,164,78,.4)}
 #xpFill2{display:block;height:100%;background:linear-gradient(90deg,#6d4396,#b06cff,#6d4396);width:0%;transition:width .3s}
-#xpTxt{position:absolute;right:8px;bottom:12px;font-size:10px;color:#cdbcf0;text-shadow:0 1px 2px #000;z-index:6}
+#xpTxt{position:absolute;right:calc(8px + var(--sar));bottom:calc(12px + var(--sab));font-size:10px;color:#cdbcf0;text-shadow:0 1px 2px #000;z-index:6}
 /* 互動提示 */
-#interactTip{position:absolute;left:50%;bottom:118px;transform:translateX(-50%);z-index:6;display:none;padding:7px 18px;font-size:13.5px;letter-spacing:2px;color:#ffe9a8}
+#interactTip{position:absolute;left:50%;bottom:calc(118px + var(--sab));transform:translateX(-50%);z-index:6;display:none;padding:7px 18px;font-size:13.5px;letter-spacing:2px;color:#ffe9a8}
 #interactTip b{border:1px solid var(--gold);padding:0 7px;margin-right:8px;color:#fff;background:rgba(60,45,10,.8)}
-#toast{position:absolute;bottom:170px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:7px;align-items:center;pointer-events:none;z-index:7}
+#toast{position:absolute;bottom:calc(170px + var(--sab));left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:7px;align-items:center;pointer-events:none;z-index:7}
 .toastItem{background:rgba(10,13,18,.92);border:1px solid var(--gold);color:var(--gold2);padding:8px 18px;font-size:14px;letter-spacing:1px;animation:tin .25s ease;box-shadow:0 6px 16px rgba(0,0,0,.5);white-space:nowrap}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
 /* 觸控：左搖桿 + 右技能簇（真手遊 MMO 佈局） */
-#touchUI{position:absolute;inset:auto 0 0 0;display:none;justify-content:space-between;align-items:flex-end;padding:0 14px 86px;pointer-events:none;z-index:6}
+#touchUI{position:absolute;inset:auto 0 0 0;display:none;justify-content:space-between;align-items:flex-end;padding:0 calc(14px + var(--sar)) calc(86px + var(--sab)) calc(14px + var(--sal));pointer-events:none;z-index:6}
 body.touch #touchUI{display:flex}
 #stick{width:118px;height:118px;border-radius:50%;background:rgba(10,13,18,.42);border:1.5px solid rgba(201,164,78,.5);position:relative;pointer-events:auto;touch-action:none;flex:none}
 #knob{width:50px;height:50px;border-radius:50%;background:rgba(236,225,196,.75);border:1px solid var(--gold-dim);position:absolute;left:34px;top:34px}
@@ -175,7 +175,7 @@ body.touch #touchUI{display:flex}
 .abtn:active{filter:brightness(1.55)}
 .abtn.cd{opacity:.4}
 /* ===== 面板（暗色 MMO 視窗） ===== */
-.sheet{position:absolute;inset:0;background:rgba(3,5,8,.66);display:none;align-items:center;justify-content:center;padding:14px;z-index:9}
+.sheet{position:absolute;inset:0;background:rgba(3,5,8,.66);display:none;align-items:center;justify-content:center;padding:calc(14px + var(--sat)) calc(14px + var(--sar)) calc(14px + var(--sab)) calc(14px + var(--sal));z-index:9}
 .sheet.open{display:flex}
 .sheetBox{background:linear-gradient(172deg,rgba(22,27,38,.97),rgba(10,13,18,.98));color:var(--paper);border:1px solid var(--gold-dim);outline:1px solid rgba(201,164,78,.2);outline-offset:3px;max-width:620px;width:100%;max-height:90%;overflow-y:auto;padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.7);position:relative;border-radius:6px}
 .sheetBox h3{margin:0;font-size:20px;letter-spacing:4px;font-weight:900;color:var(--gold2)}
