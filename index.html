@@ -120,12 +120,24 @@ button{min-height:44px;cursor:pointer;font-family:var(--serif)}
 .sysBtn{width:44px;height:44px;border:1px solid rgba(201,164,78,.55);background:var(--plate);color:var(--gold2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:10px;letter-spacing:1px;padding:0;border-radius:4px}
 .sysBtn svg{width:19px;height:19px}
 .sysBtn:active{filter:brightness(1.6)}
-.chips{display:flex;gap:6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .chip{background:var(--plate2);border:1px solid rgba(201,164,78,.4);padding:3px 10px;font-size:12px;color:#cfc3a0}
 .chip b{color:var(--gold2)}
-/* 任務追蹤（右側）：排在小地圖／按鈕列下方的文件流內，永不重疊 */
+/* 右側可收合面板：銀兩／功能鈕／任務追蹤收進同一欄，收起後只剩小地圖與展開鈕，不擋視線 */
+#rightToggle{align-self:flex-end;display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:5px 14px 5px 16px;border-radius:999px;border:1px solid rgba(201,164,78,.65);background:var(--plate);color:var(--gold2);font-size:12px;letter-spacing:2px;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+#rightToggle:active{filter:brightness(1.6)}
+#rightToggle .rtChev{display:inline-block;font-size:14px;line-height:1;transition:transform .2s}
+#topRight.collapsed #rightToggle .rtChev{transform:rotate(180deg)}
+#rightPanel{display:flex;flex-direction:column;align-items:flex-end;gap:7px;transform-origin:top right;animation:rightIn .18s ease}
+@keyframes rightIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+#topRight.collapsed #rightPanel{display:none}
+/* 任務追蹤（右側）：排在小地圖／按鈕列下方的文件流內，永不重疊；標題可點，只收任務內文 */
 #questTag{position:relative;z-index:5;width:218px;padding:9px 12px;font-size:12.5px;line-height:1.65;color:#e6dcc0;pointer-events:none}
-#questTag .qh{color:var(--gold2);font-size:11px;letter-spacing:3px;border-bottom:1px solid rgba(201,164,78,.35);padding-bottom:4px;margin-bottom:5px}
+#questTag .qh{color:var(--gold2);font-size:11px;letter-spacing:3px;border-bottom:1px solid rgba(201,164,78,.35);padding-bottom:4px;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;pointer-events:auto;cursor:pointer}
+#questTag .qchev{font-size:13px;letter-spacing:0;transition:transform .2s;flex:none}
+#questTag.questCollapsed .qchev{transform:rotate(-90deg)}
+#questTag.questCollapsed .qh{border-bottom:0;padding-bottom:0;margin-bottom:0}
+#questTag.questCollapsed .qbody{display:none}
 #questTag b{color:#ffe9a8}
 /* Boss 血條（頂中） */
 #bossBar{position:absolute;top:calc(14px + var(--sat));left:50%;transform:translateX(-50%);width:min(520px,62%);display:none;z-index:6}
@@ -257,21 +269,24 @@ body.touch #touchUI{display:flex}
         </div>
       </div>
 
-      <!-- 右上小地圖 -->
+      <!-- 右上小地圖 + 可收合右欄 -->
       <div id="topRight">
         <div id="miniWrap" title="開啟星之輿圖"><canvas id="minimap" width="256" height="256"></canvas><div id="miniClock">黃昏 · 酉時</div><div id="miniHint">點擊放大</div><div id="miniZone">清風村</div></div>
-        <div class="chips">
-          <span class="chip">銀兩 <b id="goldText">0</b></span>
-          <span class="chip">玉石 <b id="gemText">0</b></span>
-          <span class="chip">丹藥 <b id="potText">3</b></span>
+        <button id="rightToggle" type="button" aria-expanded="true" aria-controls="rightPanel" title="收起右側面板"><span id="rightToggleLabel">收起右欄</span><span class="rtChev" aria-hidden="true">›</span></button>
+        <div id="rightPanel">
+          <div class="chips">
+            <span class="chip">銀兩 <b id="goldText">0</b></span>
+            <span class="chip">玉石 <b id="gemText">0</b></span>
+            <span class="chip">丹藥 <b id="potText">3</b></span>
+          </div>
+          <div class="sysRow">
+            <button class="sysBtn" id="bagBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 8h14l-1.2 12H6.2L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>行囊</button>
+            <button class="sysBtn" id="questBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></svg>任務</button>
+            <button class="sysBtn" id="shopBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 9l1.5-5h13L20 9M4 9h16M4 9v11h16V9M9 20v-6h6v6"/></svg>鐵匠</button>
+            <button class="sysBtn" id="helpBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3A2.6 2.6 0 1 1 12 12.5V14M12 17.2v.3"/></svg>江湖錄</button>
+          </div>
+          <div id="questTag" class="hudPlate"></div>
         </div>
-        <div class="sysRow">
-          <button class="sysBtn" id="bagBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 8h14l-1.2 12H6.2L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>行囊</button>
-          <button class="sysBtn" id="questBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></svg>任務</button>
-          <button class="sysBtn" id="shopBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 9l1.5-5h13L20 9M4 9h16M4 9v11h16V9M9 20v-6h6v6"/></svg>鐵匠</button>
-          <button class="sysBtn" id="helpBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3A2.6 2.6 0 1 1 12 12.5V14M12 17.2v.3"/></svg>江湖錄</button>
-        </div>
-        <div id="questTag" class="hudPlate"></div>
       </div>
       <div id="bossBar"><div class="bn" id="bossName">強敵</div><div class="bar"><i id="bossFill" style="width:100%"></i></div></div>
       <div id="zoneBanner"><div class="zb1" id="zbName">清風村</div><div class="zb2" id="zbSub">蓮湖石橋 · 安然之地</div></div>
@@ -1175,11 +1190,14 @@ function renderBag(){
 }
 function equipItem(i){var it=S.inv[i];var old=S.eq[it.slot];S.eq[it.slot]=it;S.inv.splice(i,1);if(old)S.inv.push(old);
  if(it.cls&&it.cls!==S.cls)toast("此乃"+CLASSES[it.cls].name+"兵器，你使來威力打折");renderBag();updateHUD();toast("已裝備："+it.name);}
+var questCollapsed=false;
 function renderQuestTag(){var q=QUEST_DEFS[S.questIdx];var el=$("questTag");
- if(!q){el.innerHTML='<div class="qh">任 務 追 蹤</div>主線告示已全數達成<br>蛟龍已除，繼續刷神兵、衝強化吧。';return;}
+ el.classList.toggle("questCollapsed",questCollapsed);
+ var head='<div class="qh" role="button" aria-expanded="'+(!questCollapsed)+'" title="收起／展開任務追蹤"><span>任 務 追 蹤</span><span class="qchev" aria-hidden="true">▾</span></div>';
+ if(!q){el.innerHTML=head+'<div class="qbody">主線告示已全數達成<br>蛟龍已除，繼續刷神兵、衝強化吧。</div>';return;}
  var done=S.questProg>=q.need;
  var extra=q.type==="deliver"?(S.questFlag?' · <span style="color:#a8d3ae">家書已取，送往藥王谷</span>':' · <span style="color:#f3cf9a">先向村長領取家書</span>'):"";
- el.innerHTML='<div class="qh">任 務 追 蹤</div><b>'+q.t+'</b><br>'+q.d+'（'+Math.min(S.questProg,q.need)+'/'+q.need+'）'+extra+(done?'<br><span style="color:#a8d3ae">可領賞（點右上「任務」）</span>':"");}
+ el.innerHTML=head+'<div class="qbody"><b>'+q.t+'</b><br>'+q.d+'（'+Math.min(S.questProg,q.need)+'/'+q.need+'）'+extra+(done?'<br><span style="color:#a8d3ae">可領賞（點右上「任務」）</span>':"")+'</div>';}
 function renderQuests(){
  var html="";QUEST_DEFS.forEach(function(q,i){
   var st2=i<S.questIdx?"已達成":i===S.questIdx?"進行中":"尚未揭榜";
@@ -1268,6 +1286,11 @@ function openSheet(id){$(id).classList.add("open");}
 function closeSheets(){document.querySelectorAll(".sheet").forEach(function(s){s.classList.remove("open");});}
 document.querySelectorAll("[data-close]").forEach(function(b){b.onclick=closeSheets;});
 document.querySelectorAll(".sheet").forEach(function(s){s.addEventListener("click",function(e){if(e.target===s)closeSheets();});});
+/* 右欄收合：收起後只剩小地圖與「展開右欄」鈕，畫面不再被擋；狀態只記在本次遊玩中 */
+var rightCollapsed=false;
+function setRightCollapsed(v){rightCollapsed=v;var tr=$("topRight");if(tr)tr.classList.toggle("collapsed",v);var btn=$("rightToggle");if(btn){btn.setAttribute("aria-expanded",v?"false":"true");btn.title=v?"展開右側面板":"收起右側面板";}var lab=$("rightToggleLabel");if(lab)lab.textContent=v?"展開右欄":"收起右欄";}
+$("rightToggle").onclick=function(){setRightCollapsed(!rightCollapsed);};
+$("questTag").addEventListener("click",function(e){var h=e.target&&e.target.closest?e.target.closest(".qh"):null;if(!h)return;questCollapsed=!questCollapsed;renderQuestTag();});
 $("bagBtn").onclick=function(){renderBag();openSheet("bagSheet");};
 $("questBtn").onclick=function(){renderQuests();openSheet("questSheet");};
 $("shopBtn").onclick=function(){renderShop();openSheet("shopSheet");};
